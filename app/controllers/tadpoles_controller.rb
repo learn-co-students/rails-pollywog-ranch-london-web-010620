@@ -2,6 +2,16 @@ class TadpolesController < ApplicationController
   before_action :set_tadpole, only: [:show, :edit, :update, :destroy, :metamorphose]
 
   # add your metamorphose action here
+  def metamorphose
+    new_frog = Frog.new(name: @tadpole.name, color: @tadpole.color, pond: @tadpole.pond)
+
+    if new_frog.save
+      @tadpole.destroy
+      redirect_to new_frog, notice: "#{new_frog.name} The Tadpole successfully became a frog."
+    else
+      render :show
+    end
+  end
 
   def index
     @tadpoles = Tadpole.all
